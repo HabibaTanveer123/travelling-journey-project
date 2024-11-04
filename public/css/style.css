@@ -1,0 +1,52 @@
+.body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; 
+    margin: 0;
+    height:100%;
+}
+.bg-image {
+    background-image: url("/images/bg.jpg");
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh; 
+    width: 100%; 
+    padding: 20px; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.form-container {
+    position: sticky;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1; 
+    width: 50%;
+    margin-top: 30%;
+}
+.card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+}
+.btn-primary {
+    margin-top: auto; 
+}
+@media (max-width: 768px) {
+    .form-container {
+        width: 90%; /* Wider on mobile */
+        padding: 15px; /* Reduced padding */
+        margin: 20px; /* Add some margin to separate from edges */
+        position: relative; /* Changed from sticky to relative */
+        top: auto; /* Remove sticky behavior */
+        left: auto; /* Remove sticky behavior */
+        transform: none; /* Remove transformation */
+    }
+}
