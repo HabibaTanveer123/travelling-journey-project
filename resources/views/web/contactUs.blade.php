@@ -1,6 +1,4 @@
 <x-web-layout>
-<!DOCTYPE html>
-<html lang="en">
 <body class="body">
 
     <!-- Background and Container -->
@@ -46,5 +44,4 @@
     </div>
 
 </body>
-</html>
 </x-web-layout>

@@ -4,7 +4,7 @@
         <div class="container">
             <!-- Brand/logo link -->
             <a class="navbar-brand" href="#">
-                <img src="{{ asset('images/logo.jpg')}}" width="100" height="40"> <!-- Logo image -->
+                <img src="{{ asset('images/logo.jpg') }}" width="100" height="40"> <!-- Logo image -->
             </a>
             <nav class="navbar navbar-expand-lg bg-body-tertiary">
                 <div class="container-fluid">
@@ -13,29 +13,48 @@
                         <span class="navbar-toggler-icon"></span> <!-- Icon for the toggler -->
                     </button>
                     <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                        <ul class="navbar-nav">
-                            <!-- Navigation items -->
+                        <!-- Left side: Navigation items -->
+                        <ul class="navbar-nav me-auto">
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="/">Home</a> <!-- Home link -->
+                                <a class="nav-link" href="{{ route('index') }}">Home</a> <!-- Home link -->
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/booking">Booking</a> <!-- Booking link -->
+                                <a class="nav-link" href="{{ route('booking') }}">Booking</a> <!-- Booking link -->
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/packages">Packages</a> <!-- Packages link -->
+                                <a class="nav-link" href="{{ route('packages') }}">Packages</a> <!-- Packages link -->
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/memories">Memories</a> <!-- Memories link -->
+                                <a class="nav-link" href="{{ route('memories') }}">Memories</a> <!-- Memories link -->
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/contactUs">Contact us</a> <!-- Contact Us link -->
+                                <a class="nav-link" href="{{ route('contactUs') }}">Contact us</a> <!-- Contact Us link -->
                             </li>
                         </ul>
-                        <!-- Search form -->
-                        <form class="d-flex ms-auto" onsubmit="return handleSearch(event);"> 
-                            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="searchQuery" required> <!-- Search input field -->
-                            <button class="btn btn-outline-success" type="submit">Search</button> <!-- Search button -->
-                        </form>
+                        <!-- Right side: Admin or Guest -->
+                        <div class="d-flex">
+                            @auth
+                                @if (Auth::user()->email === 'admin@gmail.com')
+                                    <span class="navbar-text me-3">Welcome, Admin</span>
+                                    <a class="btn btn-outline-primary me-2" href="{{ route('admin.packages.viewBookings') }}">View Bookings</a> <!-- View Bookings -->
+                                    <a class="btn btn-outline-secondary" href="{{ route('admin.index') }}">View Package</a> <!-- Add Package -->
+                                @else
+                                    <script>
+                                    <span class="navbar-text me-3">Hello</span>
+                                    </script>
+                                @endif
+                                <a class="btn btn-outline-danger ms-2" href="{{ route('logout') }}"
+                                   onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                    Logout
+                                </a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    @csrf
+                                </form>
+                            @else
+                                <a class="btn btn-outline-primary me-2" href="{{ route('login') }}">Login</a> <!-- Login button -->
+                                <a class="btn btn-outline-secondary me-2" href="{{ route('register') }}">Signup</a> <!-- Signup button -->
+                            @endauth
+                        </div>
                     </div>
                 </div>
             </nav>
@@ -43,4 +62,3 @@
     </nav>
 </header>
 <script src="{{ asset('js/script.js') }}"></script>
-

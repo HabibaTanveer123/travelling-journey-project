@@ -48,5 +48,8 @@
         top: auto; /* Remove sticky behavior */
         left: auto; /* Remove sticky behavior */
         transform: none; /* Remove transformation */
+        max-height: none; /* Remove height limit for larger screens */
+        flex-direction: row; /* Switch to row layout for larger screens */
+        overflow: visible; /* Show all cards */
     }
 }

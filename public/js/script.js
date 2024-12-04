@@ -20,6 +20,33 @@ function handleSearch(event) {
         case 'contact us':
             window.location.href = '/contactUs'; // Redirect to Contact Us page
             break;
+        case 'italy':
+            window.location.href = '/details-italy';
+            break;
+        case 'dubai':
+            window.location.href = '/details-uae';
+            break;
+        case 'uae':
+            window.location.href = '/details-uae';
+            break;
+        case 'uk':
+            window.location.href = '/details-uk';
+            break;
+        case 'london':
+                window.location.href = '/details-uk';
+                break;
+        case 'malaysia':
+            window.location.href = '/details-malaysia';
+            break;
+        case 'pakistan':
+            window.location.href = '/details-pakistan';
+            break;
+        case 'usa':
+            window.location.href = '/details-usa';
+            break;
+        case 'america':
+            window.location.href = '/details-usa';
+            break;
         default:
             alert('Page not found'); // Alert user if the page is not found
     }
