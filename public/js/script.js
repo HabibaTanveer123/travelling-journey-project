@@ -1,53 +1,43 @@
-function handleSearch(event) {
-    event.preventDefault(); // Prevent the default form submission behavior
+// public/js/script.js
 
-    const query = document.getElementById('searchQuery').value.toLowerCase(); // Get and normalize the search query
+document.getElementById('searchBar').addEventListener('input', function () {
+    let query = this.value.trim();
 
-    // Redirect based on the search query
-    switch (query) {
-        case 'home':
-            window.location.href = '/'; // Redirect to Home page
-            break;
-        case 'booking':
-            window.location.href = '/booking'; // Redirect to Booking page
-            break;
-        case 'packages':
-            window.location.href = '/packages'; // Redirect to Packages page
-            break;
-        case 'memories':
-            window.location.href = '/memories'; // Redirect to Memories page
-            break;
-        case 'contact us':
-            window.location.href = '/contactUs'; // Redirect to Contact Us page
-            break;
-        case 'italy':
-            window.location.href = '/details-italy';
-            break;
-        case 'dubai':
-            window.location.href = '/details-uae';
-            break;
-        case 'uae':
-            window.location.href = '/details-uae';
-            break;
-        case 'uk':
-            window.location.href = '/details-uk';
-            break;
-        case 'london':
-                window.location.href = '/details-uk';
-                break;
-        case 'malaysia':
-            window.location.href = '/details-malaysia';
-            break;
-        case 'pakistan':
-            window.location.href = '/details-pakistan';
-            break;
-        case 'usa':
-            window.location.href = '/details-usa';
-            break;
-        case 'america':
-            window.location.href = '/details-usa';
-            break;
-        default:
-            alert('Page not found'); // Alert user if the page is not found
+    // Perform search only if 1 character is entered
+    if (query.length >= 1) {
+        fetch(`/search?query=${query}`)
+            .then(response => response.json())
+            .then(data => {
+                let results = '';
+
+                // Display packages if found
+                if (data.packages.length > 0) {
+                    data.packages.forEach(package => {
+                        results += `<li class="list-group-item"><a href="/packages/${package.id}">${package.name}</a></li>`;
+                    });
+                }
+
+                // Display categories if found
+                if (data.categories.length > 0) {
+                    data.categories.forEach(category => {
+                        results += `<li class="list-group-item" data-category-id="${category.id}">${category.name}</li>`;
+                    });
+                }
+
+                // If no results, show a "No results found" message
+                if (results === '') {
+                    results = '<li class="list-group-item">No results found</li>';
+                }
+
+                // Display the results dropdown
+                const searchResults = document.getElementById('searchResults');
+                searchResults.innerHTML = results;
+                searchResults.style.display = results ? 'block' : 'none';
+            })
+            .catch(error => {
+                console.error('Error fetching search results:', error);
+            });
+    } else {
+        document.getElementById('searchResults').style.display = 'none';
     }
-}
+});

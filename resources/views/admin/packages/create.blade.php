@@ -8,6 +8,15 @@
                     {{ session('success') }}
                 </div>
             @endif
+            @if($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
 
             <form action="{{ route('admin.packages.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
@@ -29,14 +38,28 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="images" class="form-label">Images (JSON Array)</label>
-                        <input type="text" class="form-control" id="images" name="images" placeholder='e.g. ["image1.jpg", "image2.jpg"]'>
+                        <label for="images" class="form-label">Images</label>
+                        <input type="file" class="form-control" id="images" name="images[]" multiple required>
                     </div>
 
                     <div class="mb-3">
-                        <label for="itinerary" class="form-label">Itinerary (JSON Array)</label>
-                        <input type="text" class="form-control" id="itinerary" name="itinerary" placeholder='e.g. ["Arrival", "Tour"]'>
+                        <label for="itinerary" class="form-label">Itinerary</label>
+                        <textarea class="form-control" id="itinerary" name="itinerary" rows="4" placeholder="Enter itinerary details, one per line" required></textarea>
                     </div>
+
+                    <!-- Category Dropdown -->
+                    <div class="mb-3">
+    <label for="category" class="form-label">Category</label>
+    <select class="form-control" id="category" name="category_id" required>
+        <option value="" disabled selected>Select a Category</option>
+        @foreach($categories as $category)
+            <option value="{{ $category->id }}" 
+                {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                {{ $category->name }}
+            </option>
+        @endforeach
+    </select>
+</div>
 
                     <div class="text-center">
                         <button type="submit" class="btn btn-primary">Save Package</button>

@@ -13,76 +13,48 @@
 
             <!-- Customer Reviews and Photos -->
             <div class="row"> <!-- Bootstrap row to organize customer memory cards -->
-                
-                <!-- Customer Memory 1 -->
-                <div class="col-md-4 mb-4"> <!-- Bootstrap column for medium and larger screens; mb-4 adds bottom margin -->
-                    <div class="card h-100"> <!-- Card component that takes full height of the column -->
-                        <img src="images/memory1.jpg" class="card-img-top" alt="Customer Memory" style="height: 200px; object-fit: fill;"> <!-- Top image of the card -->
-                        <div class="card-body"> <!-- Body of the card containing text -->
-                            <p class="card-text">"An amazing experience! The tour was well-organized, and we loved every moment in Paris!"</p> <!-- Review text -->
-                            <h6 class="text-muted">- Aliza</h6> <!-- Customer name in muted color -->
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Customer Memory 2 -->
-                <div class="col-md-4 mb-4"> <!-- Bootstrap column for the second memory -->
+                @foreach ($reviews as $review) <!-- Loop through the reviews -->
+                <div class="col-md-4 mb-4"> <!-- Bootstrap column for each review -->
                     <div class="card h-100"> <!-- Card component -->
-                        <img src="images/memory2.webp" class="card-img-top" alt="Customer Memory" style="height: 200px; object-fit: cover;"> <!-- Top image -->
+                        @if ($review->image) <!-- Check if there's an image -->
+                            <img src="{{ asset('storage/' . $review->image) }}" class="card-img-top" alt="Customer Memory" style="height: 200px; object-fit: fill;">
+                        @endif
                         <div class="card-body"> <!-- Card body -->
-                            <p class="card-text">"Thanks for making our family trip to the USA unforgettable. Highly recommended!"</p> <!-- Review text -->
-                            <h6 class="text-muted">- Hania</h6> <!-- Customer name -->
+                            <p class="card-text">{{ $review->review }}</p> <!-- Review text -->
                         </div>
                     </div>
                 </div>
-
-                <!-- Customer Memory 3 -->
-                <div class="col-md-4 mb-4"> <!-- Column for the third memory -->
-                    <div class="card h-100"> <!-- Card component -->
-                        <img src="images/memory3.avif" class="card-img-top" alt="Customer Memory" style="height: 200px; object-fit: fill;"> <!-- Top image -->
-                        <div class="card-body"> <!-- Card body -->
-                            <p class="card-text">"Dubai is magical, and this tour exceeded all our expectations!"</p> <!-- Review text -->
-                            <h6 class="text-muted">- Huzaifa</h6> <!-- Customer name -->
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Customer Memory 4 -->
-                <div class="col-md-4 mb-4"> <!-- Column for the fourth memory -->
-                    <div class="card h-100"> <!-- Card component -->
-                        <img src="images/memory4.jpg" class="card-img-top" alt="Customer Memory" style="height: 200px; object-fit: fill;"> <!-- Top image -->
-                        <div class="card-body"> <!-- Card body -->
-                            <p class="card-text">"Malaysia is breathtaking. Thank you for the well-planned itinerary!"</p> <!-- Review text -->
-                            <h6 class="text-muted">- Khalid</h6> <!-- Customer name -->
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Customer Memory 5 -->
-                <div class="col-md-4 mb-4"> <!-- Column for the fifth memory -->
-                    <div class="card h-100"> <!-- Card component -->
-                        <img src="images/memory5.jpg" class="card-img-top" alt="Customer Memory" style="height: 200px; object-fit: fill;"> <!-- Top image -->
-                        <div class="card-body"> <!-- Card body -->
-                            <p class="card-text">"Our London adventure was unforgettable. Can't wait for the next trip!"</p> <!-- Review text -->
-                            <h6 class="text-muted">- Ayesha</h6> <!-- Customer name -->
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Customer Memory 6 -->
-                <div class="col-md-4 mb-4"> <!-- Column for the sixth memory -->
-                    <div class="card h-100"> <!-- Card component -->
-                        <img src="images/memory6.jpg" class="card-img-top" alt="Customer Memory" style="height: 200px; object-fit: fill;"> <!-- Top image -->
-                        <div class="card-body"> <!-- Card body -->
-                            <p class="card-text">"Exploring Pakistan was a dream come true. The scenic beauty is unmatched!"</p> <!-- Review text -->
-                            <h6 class="text-muted">- Fariha</h6> <!-- Customer name -->
-                        </div>
-                    </div>
-                </div>
+                @endforeach
 
             </div> <!-- End of the row -->
+
+            <!-- Add a Review Section -->
+            <div class="mt-5">
+                <h3 class="text-center mb-4">Add Your Review</h3> <!-- Section heading -->
+                <form action="{{ route('reviews.store') }}" method="POST" enctype="multipart/form-data" class="text-center">
+                    @csrf <!-- CSRF token for security -->
+
+                    <!-- Text Review Input -->
+                    <div class="mb-3">
+                        <label for="review" class="form-label">Your Review</label>
+                        <textarea id="review" name="review" class="form-control" rows="4" placeholder="Write your review here..." required></textarea>
+                    </div>
+
+                    <!-- Image Upload Input -->
+                    <div class="mb-3">
+                        <label for="image" class="form-label">Upload an Image (optional)</label>
+                        <input type="file" id="image" name="image" class="form-control" accept="image/*">
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn btn-primary">Submit Review</button>
+                </form>
+            </div>
+
         </div> <!-- End of container -->
     </div> <!-- End of background image div -->
 
 </body>
+
 </x-web-layout>

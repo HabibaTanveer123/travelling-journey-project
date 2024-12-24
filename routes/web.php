@@ -7,8 +7,27 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\BookingController;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\SearchController;
+use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\ContactController;
+
+
+
+Route::get('/admin/contactMessages', [ContactController::class, 'index'])->name('admin.contactMessages');
+
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+
+Route::get('/memories', [ReviewController::class, 'index'])->name('memories');
+Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
+
+
+Route::get('/packages', [PackageController::class, 'getPackagesByCategory'])->name('packages');
+
 
 // ==================== User-facing Routes ====================
+Route::get('/search', [SearchController::class, 'search'])->name('search');
+Route::get('/admin/categories', [CategoryController::class, 'index'])->name('admin.categories.index');
 
 // Home page
 Route::get('/', [WebController::class, 'index'])->name('index');
@@ -17,13 +36,11 @@ Route::get('/', [WebController::class, 'index'])->name('index');
 Route::get('/booking', [WebController::class, 'booking'])->name('booking');
 
 // Packages (frontend view all packages)
-Route::get('/packages', [WebController::class, 'packages'])->name('packages');
 
 // Package details (frontend view details of a single package)
 Route::get('/packages/{id}', [WebController::class, 'packageDetails'])->name('packages.details');
 
 // Memories page
-Route::get('/memories', [WebController::class, 'memories'])->name('memories');
 
 // Contact Us page
 Route::get('/contactUs', [WebController::class, 'contactUs'])->name('contactUs');
@@ -33,7 +50,7 @@ Route::get('/contactUs', [WebController::class, 'contactUs'])->name('contactUs')
 Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
 
     // Admin Dashboard
-    Route::get('index', [AdminController::class, 'index'])->name('index');
+    Route::get('/', [AdminController::class, 'index'])->name('index');
     Route::get('packages/viewBookings', [AdminController::class, 'viewBookings'])->name('packages.viewBookings');
 
     // ==================== Bookings ====================
@@ -72,14 +89,18 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
 });
 Route::post('/store', [BookingController::class, 'store'])->name('store');
 
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::resource('categories', CategoryController::class);
+});
 // ==================== Authentication Routes ====================
 require __DIR__ . '/auth.php';
 
 // Override Default Login Redirect
-Route::post('/login', [AuthenticatedSessionController::class, 'store'])
-    ->middleware(['guest'])
-    ->name('login')
-    ->defaults('redirect', '/admin/index'); // Redirect to admin after login
+// Override the login route to use your custom AuthenticatedSessionController
+// Route::post('/login', [AuthenticatedSessionController::class, 'store'])
+//     ->middleware(['guest'])
+//     ->name('login');
+
 
 // ==================== Profile Routes ====================
 Route::middleware('auth')->group(function () {
@@ -87,3 +108,6 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+Route::get('/dashboard', function () {
+    return view('/web/index'); // Replace 'dashboard' with the appropriate view
+})->name('dashboard');

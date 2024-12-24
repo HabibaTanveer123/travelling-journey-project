@@ -9,7 +9,7 @@
                 </div>
             @endif
 
-            <form action="{{ route('admin.packages.update', $package->id) }}" method="POST">
+            <form action="{{ route('admin.packages.update', $package->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
 
@@ -30,13 +30,42 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="images" class="form-label">Images (JSON Array)</label>
-                        <input type="text" class="form-control" id="images" name="images" value="{{ old('images', json_encode($package->images)) }}">
+                        <label for="images" class="form-label">Images (Upload new images)</label>
+                        <input type="file" class="form-control" id="images" name="images[]" multiple>
+                        @if(is_array($package->images))
+                            <div class="mt-3">
+                                <h5>Existing Images:</h5>
+                                @foreach($package->images as $image)
+                                    <img src="{{ asset('storage/' . $image) }}" alt="Package Image" class="img-thumbnail" style="max-width: 150px; margin-right: 10px;">
+                                @endforeach
+                            </div>
+                        @elseif($package->images)
+                            <div class="mt-3">
+                                <h5>Existing Images:</h5>
+                                @foreach(json_decode($package->images) as $image)
+                                    <img src="{{ asset('storage/' . $image) }}" alt="Package Image" class="img-thumbnail" style="max-width: 150px; margin-right: 10px;">
+                                @endforeach
+                            </div>
+                        @endif
                     </div>
 
                     <div class="mb-3">
                         <label for="itinerary" class="form-label">Itinerary (JSON Array)</label>
                         <input type="text" class="form-control" id="itinerary" name="itinerary" value="{{ old('itinerary', json_encode($package->itinerary)) }}">
+                    </div>
+
+                    <!-- Category Dropdown -->
+                    <div class="mb-3">
+                        <label for="category" class="form-label">Category</label>
+                        <select class="form-control" id="category" name="category_id" required>
+                            <option value="" disabled>Select a Category</option>
+                            @foreach($categories as $category)
+                                <option value="{{ $category->id }}" 
+                                    {{ old('category_id', $package->category_id) == $category->id ? 'selected' : '' }}>
+                                    {{ $category->name }}
+                                </option>
+                            @endforeach
+                        </select>
                     </div>
 
                     <div class="text-center">

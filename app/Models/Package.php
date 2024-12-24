@@ -17,6 +17,7 @@ class Package extends Model
         'description',
         'images',
         'itinerary',
+        'category_id'
     ];
 
     // Cast images and itinerary to arrays
@@ -25,13 +26,9 @@ class Package extends Model
         'itinerary' => 'array',
     ];
 
-    /**
-     * Define the relationship with the Booking model.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function bookings()
+    
+    public function category()
     {
-        return $this->hasMany(Booking::class);  // A package has many bookings
+        return $this->belongsTo(Category::class);
     }
 }
