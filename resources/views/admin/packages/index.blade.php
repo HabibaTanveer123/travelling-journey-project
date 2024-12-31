@@ -15,6 +15,7 @@
                 <tr>
                     <th>Name</th>
                     <th>Destination</th>
+                    <th>Category Name</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -23,6 +24,7 @@
                 <tr>
                     <td>{{ $package->name }}</td>
                     <td>{{ $package->destination }}</td>
+                    <td>{{ $package->category->name ?? 'Uncategorized' }}</td>
                     <td>
                         <a href="{{ route('admin.packages.edit', $package->id) }}" class="btn btn-sm btn-warning">Edit</a>
                         <form action="{{ route('admin.packages.destroy', $package->id) }}" method="POST" style="display: inline;">

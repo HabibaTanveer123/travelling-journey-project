@@ -3,8 +3,15 @@
         <div class="bg-image">
             <div class="container my-5">
                 <div class="itinerary-container">
+                    <!-- Display Category Name -->
+                    <h3 class="text-center text-muted mb-2">
+                        Category: {{ $package->category->name ?? 'Uncategorized' }}
+                    </h3>
+                    
                     <!-- Display Package Name -->
-                    <h2 class="text-center mb-4">{{ $package->name }} - 7-Day Itinerary</h2>
+                    <h2 class="text-center mb-4">
+                        {{ $package->name }} - 7-Day Itinerary
+                    </h2>
                     
                     <!-- Display Package Images -->
                     <div class="row mb-4">
